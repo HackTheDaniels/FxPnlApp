@@ -28,8 +28,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,TabLayout.OnTabSelectedListener{
 
-    private static String TAG = MainActivity.class.getSimpleName();
-
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -101,11 +99,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                //Log.d(TAG, "onDrawerClosed: " + getTitle());
-
                 invalidateOptionsMenu();
             }
-
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -129,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //Adding adapter to pager
         viewPager.setAdapter(viewPageAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
         //Adding onTabSelectedListener to swipe views
         tabLayout.setOnTabSelectedListener(this);
     }
