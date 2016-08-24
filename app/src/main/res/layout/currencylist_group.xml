@@ -4,50 +4,71 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="8dp"
-    android:background="#FFFFFF">
+    android:background="@drawable/shape" >
 
-    <ImageView
-        android:id="@+id/imgViewFlag"
-        android:layout_height="40px"
-        android:layout_width="45px"
-        android:layout_margin="5dp" />
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id = "@+id/RHE1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1,2,3,4,5,6"
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/avatar"
-        android:orientation="horizontal">
-            <TextView
-                android:id="@+id/lblListCCY"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="17dp"
-                android:textColor="#000000" />
+        android:padding="2dp">
 
-            <TextView
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+
+        <ImageView
+            android:id="@+id/imgViewFlag"
+            android:layout_height="40px"
+            android:layout_width="45px"
+            android:layout_margin="5dp" />
+
+        <TextView android:layout_column="1"
+            android:id="@+id/lblListCCY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="17dp"
+            android:gravity="center_vertical"
+            android:fontFamily="sans-serif"
+            android:textColor="#000000" />
+
+        <ImageView android:layout_column="2"
+            android:layout_marginLeft="10px"
+            android:id="@+id/clck"
+            android:src="@drawable/perm_group_system_clock"
+            android:gravity="center_vertical"
+            android:layout_width="27dp"
+            android:layout_height="27dp"/>
+
+        <TextView android:layout_column="2"
+            android:id="@+id/lblListAge"
+            android:textSize="12dp"
+            android:fontFamily="sans-serif"
+            android:textColor="#000000"
+            android:gravity="center_vertical"
+            android:textAlignment="textStart"
+           />
+
+        <TextView android:layout_column="3"
                 android:id="@+id/lblListCCYPnL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
                 android:textSize="17dp"
-                android:textColor="#000000" />
+                android:fontFamily="sans-serif"
+                android:textColor="#000000"
+            android:gravity="center_vertical"
+            android:textAlignment="textEnd"
+            />
 
-    </LinearLayout>
+        <TextView android:layout_column="4"
+            android:layout_width="70px"
+            android:layout_height="match_parent"
+         />
 
-    <!--<LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/avatar"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@android:drawable/btn_star"/>
-    </LinearLayout>-->
+    </TableRow>
+    </TableLayout>
 
 </LinearLayout>

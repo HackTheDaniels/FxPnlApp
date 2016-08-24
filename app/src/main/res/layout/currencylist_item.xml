@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="8dp"
-    android:background="#EEEEEE">
+    android:background="@drawable/shapechild" >
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id = "@+id/RHE"
@@ -17,67 +17,38 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
-
-            <TextView
-                android:id="@+id/posLabel"
-                android:layout_column="1"
-                android:text="POS"
-                android:textSize="17dp"
-                android:textColor="#000000"
-                android:padding="3dip" />
-
-            <TextView
-                android:id="@+id/blank"
-                android:layout_column="2"
-                android:gravity="left"/>
-
-            <TextView
-                android:id="@+id/bookMktLabel"
-                android:layout_column="3"
-                android:text="Book/Market"
-                android:textSize="17dp"
-                android:textColor="#000000"
-                android:padding="3dip"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/blank1"
-                android:layout_column="4"
-                android:gravity="left"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
             <TextView
                 android:id="@+id/posValue"
+                android:fontFamily="sans-serif"
                 android:layout_column="1"
                 android:text="0"
                 android:padding="3dip"
                 android:textSize="17dp"
+                android:gravity="right"
                 android:textColor="#000000" />
 
             <ImageView
                 android:id="@+id/imagePos"
                 android:layout_column="2"
-                android:src="@drawable/pos_icon"
+                android:src="@drawable/bid"
                 android:gravity="left"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
 
             <TextView
                 android:id="@+id/bookBidValue"
+                android:fontFamily="sans-serif"
                 android:layout_column="3"
                 android:text="0"
                 android:padding="3dip"
-                android:gravity="center"
+                android:gravity="right"
                 android:textSize="17dp"
                 android:textColor="#000000"
                 />
 
             <TextView
                 android:id="@+id/blank2"
+                android:fontFamily="sans-serif"
                 android:layout_column="4"
                 android:gravity="left"/>
         </TableRow>
@@ -88,32 +59,36 @@
             android:gravity="center">
             <TextView
                 android:id="@+id/posUSDValue"
+                android:fontFamily="sans-serif"
                 android:layout_column="1"
                 android:text="0"
                 android:padding="3dip"
+                android:gravity="right"
                 android:textSize="17dp"
                 android:textColor="#000000" />
 
             <ImageView
                 android:id="@+id/imageUSDPos"
                 android:layout_column="2"
-                android:src="@drawable/pos_usd_icon"
+                android:src="@drawable/market"
                 android:gravity="left"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
 
             <TextView
                 android:id="@+id/marketBidValue"
+                android:fontFamily="sans-serif"
                 android:layout_column="3"
                 android:text="0"
                 android:padding="3dip"
-                android:gravity="center"
+                android:gravity="right"
                 android:textSize="17dp"
                 android:textColor="#000000"
                 />
 
             <ImageView
                 android:id="@+id/imageUSDPos1"
+                android:fontFamily="sans-serif"
                 android:layout_column="4"
                 android:src="@drawable/flattenrisk"
                 android:gravity="left"

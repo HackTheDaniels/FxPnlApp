@@ -1,6 +1,7 @@
 package com.anz.org.fxtradepnlapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.anz.org.fxtradepnlapp.Service.MyService;
+import com.anz.org.fxtradepnlapp.SqlLite.AppDataSource;
 
 import java.util.ArrayList;
 
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     RelativeLayout mDrawerPane;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    public AppDataSource dataSource;
 
     //This is our tablayout
     private TabLayout tabLayout;
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        startService(new Intent(this, MyService.class));
         //Adding toolbar to the activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         //Adding the tabs using addTab() method
         tabLayout.addTab(tabLayout.newTab().setText("Currencies"));
+
         tabLayout.addTab(tabLayout.newTab().setText("Deals"));
         tabLayout.addTab(tabLayout.newTab().setText("Quotes"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -127,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         //Adding onTabSelectedListener to swipe views
         tabLayout.setOnTabSelectedListener(this);
+        createConnection();
     }
 
     @Override
@@ -185,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setIconifiedByDefault(true); //iconify the widget
+        searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
         return true;
     }
@@ -192,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onQueryTextSubmit(String query) {
         // User pressed the search button
+        Toast.makeText(getApplicationContext(),"Our word : "+query,Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -215,6 +226,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //
 //        return super.onOptionsItemSelected(item);
 //    }
+
+    private void createConnection()
+    {
+        dataSource = new AppDataSource(this);
+        dataSource.Open();
+    }
 
     class NavItem {
         String mTitle;

@@ -21,7 +21,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@drawable/shapegradbg"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -31,7 +31,7 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@drawable/shapegradbg"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
@@ -78,6 +78,7 @@
                     android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-thin"
                     android:text="FxPnLApp"
                     android:textColor="#fff"
                     android:textSize="16sp"
@@ -89,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif-thin"
                     android:text="View Profile"
                     android:textColor="#fff"
                     android:textSize="12sp" />
@@ -101,8 +103,10 @@
             android:layout_width="280dp"
             android:layout_height="match_parent"
             android:layout_below="@+id/profileBox"
+            android:fontFamily="sans-serif-thin"
             android:choiceMode="singleChoice"
-            android:background="#ffffffff" />
+            android:background="#ffffffff"
+            />
 
     </RelativeLayout>
 

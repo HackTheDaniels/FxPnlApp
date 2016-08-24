@@ -4,5 +4,5 @@
     <string name="drawer_open">DrawerOpen</string>
     <string name="drawer_close">DrawerOpen</string>
     <string name="hello_blank_fragment">Hello</string>
-    <string name="hint_search">Search</string>
+    <string name="hint_search">Search Currency</string>
 </resources>

@@ -130,13 +130,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView lblListCCYPnL = (TextView) convertView
                 .findViewById(R.id.lblListCCYPnL);
 
+        TextView lblListAge = (TextView) convertView
+                .findViewById(R.id.lblListAge);
+
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imgViewFlag);
 
         lblListCCY.setTypeface(null, Typeface.BOLD);
         lblListCCY.setText(headerContents[0]);
 
         lblListCCYPnL.setTypeface(null, Typeface.BOLD);
-        lblListCCYPnL.setText("$"+headerContents[1]);
+        lblListCCYPnL.setText(headerContents[1]);
+
+        lblListAge.setText(headerContents[2] +"min");
 
         String pngName = headerContents[0].toLowerCase();
         imageView.setImageResource(this._context.getResources().getIdentifier("drawable/" + pngName, null, this._context.getPackageName()));
