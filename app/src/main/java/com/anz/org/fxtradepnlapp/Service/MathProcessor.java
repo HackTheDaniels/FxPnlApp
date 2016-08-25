@@ -1,5 +1,7 @@
 package com.anz.org.fxtradepnlapp.Service;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
 
@@ -7,6 +9,7 @@ import com.anz.org.fxtradepnlapp.Common.Deal;
 import com.anz.org.fxtradepnlapp.Common.PosPnl;
 import com.anz.org.fxtradepnlapp.Common.Quote;
 import com.anz.org.fxtradepnlapp.Common.Constants;
+import com.anz.org.fxtradepnlapp.R;
 import com.anz.org.fxtradepnlapp.SqlLite.AppDataSource;
 
 import java.util.ArrayList;
@@ -22,9 +25,10 @@ public class MathProcessor
     private HashMap<String,Quote> currentQuotes;
     private HashMap<String,WeightedPrice> avgPrices;
     private AppDataSource dataSource;
-
+    private Context mainCtx;
     public MathProcessor(Context ctx)
     {
+        mainCtx=ctx;
         currentQuotes = new HashMap<String,Quote>();
         avgPrices = new HashMap<String,WeightedPrice>();
         dataSource = new AppDataSource(ctx);
@@ -35,11 +39,17 @@ public class MathProcessor
     {
         try {
             dataSource.Open();
+            ClearTables();
         }
         catch (Exception ex)
         {
             Log.e(Constants.APPNAME, "OpenDbConnection: " + ex.getMessage());
         }
+    }
+
+    public void ClearTables()
+    {
+        dataSource.DeleteAllTableValues();
     }
 
     public void CloseDbConnection()
@@ -94,7 +104,7 @@ public class MathProcessor
         for(int i = 0; i < deals.size(); i++)
         {
             CalculateWeightedPrice(deals.get(i));
-            CalculatePnlOnDeal(deal);
+            CalculatePnlOnDeal(deals.get(i));
         }
     }
 
@@ -130,9 +140,14 @@ public class MathProcessor
             ccyPos.Age = 0;
             ccyPos.Starred= false;
         }
-        CalculatePnl(deal, ccyPos);
-        usdPos.Pos = usdPos.Pos + (deal.Buy == true ? (ccyPos.PosUsd*-1) : ccyPos.PosUsd);
+
+        // Order is important
+        double tmpPos = Calculator.CalculatePosUSD(deal.Quantity, deal.Price);
+        usdPos.Pos = usdPos.Pos + (deal.Buy == true ? (tmpPos * -1) : tmpPos);
         usdPos.PosUsd = usdPos.Pos;
+
+        CalculatePnl(deal, ccyPos);
+
         dataSource.AddUpdatePosPnl(ccyPos, true);
         dataSource.AddUpdatePosPnl(usdPos, true);
     }
@@ -146,6 +161,8 @@ public class MathProcessor
         {
             ClearWeightedPrice(currentPnl.Ccy);
             currentPnl.Pnl = 0;
+            currentPnl.BookMid = 0;
+            currentPnl.MarketMid = 0;
         }
         else
         {
@@ -153,9 +170,12 @@ public class MathProcessor
             price = price == null ? new WeightedPrice(): price;
             Quote quote = GetQuote(currentPnl.Ccy);
             double marketMid = quote == null ? 0: quote.MidPrice;
+            double oldPnl= currentPnl.Pnl;
             currentPnl.Pnl =  Calculator.CalculatePnL(marketMid, price.BuyPrice, price.SellPrice, currentPnl.PosUsd);
             currentPnl.MarketMid = marketMid;// Will need this in case this is the first deal.
             currentPnl.BookMid = Calculator.CalculateMid(price.SellPrice, price.BuyPrice);
+            double newPnl= currentPnl.Pnl;
+            threshHoldCalculation(oldPnl,newPnl);
         }
     }
 
@@ -170,8 +190,11 @@ public class MathProcessor
         {
             PosPnl p = pnls.get(0);
             p.PosUsd = Calculator.CalculatePosUSD(p.Pos, quote.MidPrice);
+            double oldPnl=p.Pnl;
             p.Pnl = Calculator.CalculatePnL(quote.MidPrice,price.BuyPrice,price.SellPrice,p.PosUsd);
+            double newPnl=p.Pnl;
             dataSource.AddUpdatePosPnl(p, true);
+            threshHoldCalculation(oldPnl,newPnl);
         }
     }
 
@@ -226,5 +249,27 @@ public class MathProcessor
         Log.d(Constants.APPNAME, "QuoteEvent: Adding to database " + quote.QuoteCcy);
         dataSource.AddQuote(quote);
         Log.d(Constants.APPNAME, "QuoteEvent: Done Adding to database " + quote.QuoteCcy);
+    }
+
+    public void threshHoldCalculation(double prePnl, double currPnl)
+    {
+        double per=((currPnl-prePnl)/prePnl)*100;
+        if(per <-25)
+        {
+            sendnotification(per);
+        }
+    }
+    public  void sendnotification(double per)
+    {
+        Notification n  = new Notification.Builder(mainCtx)
+                .setContentTitle("Threshold reahced +"+per)
+                .setContentText("Subject")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true).build();
+
+        NotificationManager notificationManager =
+                (NotificationManager) mainCtx.getSystemService(mainCtx.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, n);
     }
 }

@@ -61,6 +61,7 @@ public class AppDataSource
 
     public void AddDeal(Deal deal)
     {
+        Log.i(Constants.APPNAME, "AddDeal: " + deal.DealCcy);
         try {
             ContentValues values = new ContentValues();
             values.put(DealTable.BaseCcy, deal.BaseCcy);
@@ -81,9 +82,19 @@ public class AppDataSource
         }
     }
 
+    public void DeleteAllTableValues()
+    {
+        db.delete(DealTable.TableName, null, null);
+        db.delete(PosPnLTable.TableName, null, null);
+        db.delete(QuoteTable.TableName, null, null);
+        db.delete(PosPnlHistoryTable.TableName, null, null);
+    }
+
     public List<Deal> GetDeals(int numberOfDeals, String ccy)
     {
+        Log.i(Constants.APPNAME, "GetDeals: ");
         List<Deal> deals = new ArrayList<Deal>();
+        Cursor cur;
         try {
             String query = "SELECT " +
                     DealTable.DealCcy + " , " +
@@ -96,11 +107,11 @@ public class AppDataSource
             if (ccy != null && ccy.length() > 0) {
                 query = query + " WHERE " + DealTable.DealCcy + " = " + ccy;
             }
-            query = query + " ORDER BY " + DealTable.BaseCcy + "," + DealTable.DealCcy + "," + DealTable.Timestamp;
+            query = query + " ORDER BY " + DealTable.Timestamp;
             if (numberOfDeals > 0) {
                 query = query + " DESC LIMIT " + numberOfDeals;
             }
-            Cursor cur = db.rawQuery(query, null);
+            cur = db.rawQuery(query, null);
             if (cur != null & cur.moveToFirst())
             {
                 do {
@@ -124,10 +135,9 @@ public class AppDataSource
         try {
             BeginTransaction();
             if (pp.Id != -1) {
-                String[] q_args = {};
-                q_args[0] = String.valueOf(pp.Id);
+                Log.i(Constants.APPNAME, "AddUpdatePosPnl(Update): " + pp.Ccy + " ,pos :" + pp.Pos + ",pnl:" + pp.Pnl );
                 ContentValues values = new ContentValues();
-                values.put(PosPnLTable.Age, pp.Age);
+                //values.put(PosPnLTable.Age, pp.Age);// not working
                 values.put(PosPnLTable.Pnl, pp.Pnl);
                 values.put(PosPnLTable.Pos, pp.Pos);
                 values.put(PosPnLTable.PosUsd, pp.PosUsd);
@@ -139,6 +149,7 @@ public class AppDataSource
                 values.put(PosPnLTable.Timestamp, Calendar.getInstance().get(Calendar.SECOND));
                 db.update(PosPnLTable.TableName, values, PosPnLTable.Id + " = ?", new String[]{String.valueOf(pp.Id)});
             } else {
+                Log.i(Constants.APPNAME, "AddUpdatePosPnl(Add): " + pp.Ccy + " ,pos :" + pp.Pos + ",pnl:" + pp.Pnl );
                 ContentValues values = new ContentValues();
                 values.put(PosPnLTable.Ccy, pp.Ccy);
                 values.put(PosPnLTable.Age, pp.Age);
@@ -166,6 +177,7 @@ public class AppDataSource
     public void AddHistoryPosPnl(PosPnl pp)
     {
         try {
+            Log.i(Constants.APPNAME, "AddHistoryPosPnl: ");
             ContentValues values = new ContentValues();
             values.put(PosPnlHistoryTable.Ccy, pp.Ccy);
             values.put(PosPnlHistoryTable.PosUsd, pp.PosUsd);
@@ -184,6 +196,7 @@ public class AppDataSource
     {
         List<PosPnl> pnls = new ArrayList<PosPnl>();
         try {
+            Log.i(Constants.APPNAME, "GetPosPnl: whereClause: " + whereClause);
             String query = "SELECT " +
                     PosPnLTable.Ccy + ", " +
                     PosPnLTable.Age + ", " +
@@ -195,6 +208,7 @@ public class AppDataSource
                     PosPnLTable.Timestamp + ", " +
                     PosPnLTable.PosUsd + ", " +
                     PosPnLTable.Id +
+
                     " FROM " + PosPnLTable.TableName;
             if (whereClause != null) {
                 query = query + " WHERE " + PosPnLTable.Ccy + " IN (" + whereClause + ")";
@@ -222,6 +236,7 @@ public class AppDataSource
     public void AddQuote(Quote ccy)
     {
         try {
+            Log.i(Constants.APPNAME, "AddQuote: " + ccy.QuoteCcy + " , " + ccy.MidPrice);
             ContentValues values = new ContentValues();
             values.put(QuoteTable.BaseCcy, ccy.BaseCcy);
             values.put(QuoteTable.QuoteCcy, ccy.QuoteCcy);
@@ -240,6 +255,7 @@ public class AppDataSource
     {
         List<Quote> quotes = new ArrayList<Quote>();
         try {
+            Log.i(Constants.APPNAME, "GetQuote: " + ccy);
             String query = "SELECT " +
                     QuoteTable.QuoteCcy + " , " +
                     QuoteTable.BidPrice + " , " +

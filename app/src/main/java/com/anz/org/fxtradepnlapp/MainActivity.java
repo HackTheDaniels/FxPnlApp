@@ -3,6 +3,8 @@ package com.anz.org.fxtradepnlapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,6 +34,7 @@ import com.anz.org.fxtradepnlapp.SqlLite.AppDataSource;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,TabLayout.OnTabSelectedListener{
+
 
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
@@ -67,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         startService(new Intent(this, MyService.class));
+
         //Adding toolbar to the activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -291,6 +296,27 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             iconView.setImageResource(mNavItems.get(position).mIcon);
 
             return view;
+        }
+    }
+
+
+
+    //send message to service
+    public void onClickSendMessage (View v)
+    {
+        //only we need a handler to send message to any component.
+        //here we will get the handler from the service first, then
+        //we will send a message to the service.
+
+        if(null != MyService.mMyServiceHandler)
+        {
+            //first build the message and send.
+            //put a integer value here and get it from the service handler
+            //For Example: lets use 0 (msg.what = 0;) for getting service running status from the service
+            Message msg = new Message();
+            msg.what = 0;
+            msg.obj  = "Add your Extra Meaage Here"; // you can put extra message here
+            MyService.mMyServiceHandler.sendMessage(msg);
         }
     }
 }

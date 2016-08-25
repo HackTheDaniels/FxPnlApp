@@ -1,6 +1,8 @@
 package com.anz.org.fxtradepnlapp;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.anz.org.fxtradepnlapp.Common.PosPnl;
+import com.anz.org.fxtradepnlapp.Service.MyService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.List;
  */
 public class CurrenciesTab extends Fragment{
 
+    public static Handler mUiHandler = null;
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     TextView dateView;
@@ -34,7 +38,7 @@ public class CurrenciesTab extends Fragment{
     //Overriden method onCreateView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        handleServiceMsg();
         //Returning the layout file after inflating
         currenciesTabView = inflater.inflate(R.layout.tab1, container, false);
 
@@ -44,7 +48,8 @@ public class CurrenciesTab extends Fragment{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                prepareListData();
+                //prepareListData();
+                onClickSendMessage();
             }
         });
         //set the current date
@@ -76,10 +81,29 @@ public class CurrenciesTab extends Fragment{
         expListView.setIndicatorBounds(width-150, width);
 
     }
+
+    //send message to service
+    public void onClickSendMessage ()
+    {
+        //only we need a handler to send message to any component.
+        //here we will get the handler from the service first, then
+        //we will send a message to the service.
+
+        if(null != MyService.mMyServiceHandler)
+        {
+            //first build the message and send.
+            //put a integer value here and get it from the service handler
+            //For Example: lets use 0 (msg.what = 0;) for getting service running status from the service
+            Message msg = new Message();
+            msg.what = 0;
+            msg.obj  = "Add your Extra Meaage Here"; // you can put extra message here
+            MyService.mMyServiceHandler.sendMessage(msg);
+        }
+    }
     /*
      * Preparing the list data
      */
-    private void prepareListData() {
+    public void prepareListData() {
 
         List<PosPnl> lstPosPnl = new ArrayList<PosPnl>();
         lstPosPnl =((MainActivity)this.getActivity()).dataSource.GetPosPnl(null);
@@ -128,5 +152,24 @@ public class CurrenciesTab extends Fragment{
             listDataChild.put(listDataHeader.get(i), chData);
         }
         initializeList();
+    }
+
+    private void handleServiceMsg()
+    {
+        mUiHandler = new Handler() // Receive messages from service class
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case 0:
+                        prepareListData();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        };
     }
 }

@@ -18,7 +18,16 @@ public class Calculator
 
     public static double CalculateMid(double bid, double ask)
     {
-        return (bid+ask)/2;
+        double mid = 0;
+        if(bid !=0 && ask!=0)
+        {
+            mid = (bid+ask)/2;
+        }
+        else if((bid == 0 && ask != 0) || (bid != 0 && ask == 0))
+        {
+            mid = bid + ask;
+        }
+        return mid;
     }
 
     public static void CorrectQuoteDirection(Quote quote)
@@ -28,6 +37,7 @@ public class Calculator
         quote.QuoteCcy = tmp;
         quote.AskPrice = 1/quote.AskPrice;
         quote.BidPrice = 1/quote.BidPrice;
+        quote.MidPrice = 1/quote.MidPrice;
     }
 
     public static void CorrectDealDirection(Deal deal)
@@ -62,12 +72,23 @@ public class Calculator
             sellDeal.DealCcy = deal.BaseCcy;
             sellDeal.Buy = false;
             sellDeal.Price = baseMidPrice;
-            sellDeal.Quantity = deal.Quantity;
+            sellDeal.Quantity = DoubleToInt(deal.Quantity * deal.Price);
             sellDeal.Date = deal.Date;
             deals.add(sellDeal);
         }
         return  deals;
     }
+
+    public static int DoubleToInt(double d)
+    {
+        return (int)Math.round(d);
+    }
+
+//    public static double Round(double value, int precision)
+//    {
+//        double d = new BigDecimal(value).setScale(precision,BigDecimal.ROUND_HALF_UP).doubleValue();
+//        return d;
+//    }
 
     public static double CalculatePosUSD(double quantity, double Price)
     {

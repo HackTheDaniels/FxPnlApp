@@ -2,6 +2,7 @@ package com.anz.org.fxtradepnlapp.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
 import com.anz.org.fxtradepnlapp.R;
@@ -15,6 +16,11 @@ import java.util.List;
 public class MyService extends Service {
 	public MyService() {
 	}
+
+	//used for getting the handler from other class for sending messages
+	public static Handler mMyServiceHandler 			= null;
+	//used for keep track on Android running status
+	public static Boolean 		mIsServiceRunning 			= false;
 
 	MathProcessor processor = null;
 
@@ -37,12 +43,14 @@ public class MyService extends Service {
 		ReadRawFile();
 		final Thread t=new Thread(new RepeatingThread(processor));
 		t.start();
+		mIsServiceRunning = true;
 		return START_STICKY;
 	}
 
 	@Override
 	public void onDestroy() {
 		Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+		mIsServiceRunning = false;
 
 	}
 

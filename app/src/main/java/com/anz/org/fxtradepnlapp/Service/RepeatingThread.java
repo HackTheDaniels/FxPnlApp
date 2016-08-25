@@ -2,10 +2,13 @@ package com.anz.org.fxtradepnlapp.Service;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 import com.anz.org.fxtradepnlapp.Common.Deal;
 import com.anz.org.fxtradepnlapp.Common.Quote;
+import com.anz.org.fxtradepnlapp.CurrenciesTab;
+import com.anz.org.fxtradepnlapp.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,14 +32,16 @@ public class RepeatingThread implements Runnable {
     @Override
     public  void run()
     {
-       Looper.myLooper();
+        Looper.myLooper();
         count++;
         Log.i("Log","Service Started for " + count +" Time");
 
-       // currentTime = java.sql.Time.valueOf( "00:" +String.valueOf(Calendar.getInstance().get(Calendar.MINUTE)) + ":" +
-         //           String.valueOf(Calendar.getInstance().get(Calendar.SECOND)));
+        // currentTime = java.sql.Time.valueOf( "00:" +String.valueOf(Calendar.getInstance().get(Calendar.MINUTE)) + ":" +
+        //           String.valueOf(Calendar.getInstance().get(Calendar.SECOND)));
         try{
             sendEvent();
+            serviceHandler();
+            sendRefreshUI();
         }
         catch (Exception e)
         {
@@ -47,13 +52,47 @@ public class RepeatingThread implements Runnable {
         handler.postDelayed(this,30000);
     }
 
+    private void serviceHandler()
+    {
+       MyService.mMyServiceHandler = new Handler()
+        {
+            //here we will receive messages from activity(using sendMessage() from activity)
+            public void handleMessage(Message msg)
+            {
+                Log.i("BackgroundThread","handleMessage(Message msg)" );
+                switch(msg.what)
+                {
+                    case 0:
+                        if(null != CurrenciesTab.mUiHandler)
+                        {
+                            Message msgToActivity = new Message();
+                            msgToActivity.what = 0;
+                            if(true ==MyService.mIsServiceRunning)
+                                msgToActivity.obj  = "Request Received. Service is Running"; // you can put extra message here
+                            else
+                                msgToActivity.obj  = "Request Received. Service is not Running"; // you can put extra message here
+
+                            CurrenciesTab.mUiHandler.sendMessage(msgToActivity);
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        };
+    }
+
+    private void sendRefreshUI()
+    {
+        Message msgToActivity = new Message();
+        msgToActivity.what = 0;
+        CurrenciesTab.mUiHandler.sendMessage(msgToActivity);
+    }
     private void sendEvent()
     {
         int cnt=0;
-        Scanner scan=new Scanner(BufferedData.GetData().toString());
-        List<Deal> Deals=new ArrayList<Deal>();
-        List<Quote> Quotes=new ArrayList<Quote>();
-        //DealOrQuote dq= new DealOrQuote();
         List<String> rawData=BufferedData.GetData();
         for (String row:rawData)
         {
@@ -87,7 +126,9 @@ public class RepeatingThread implements Runnable {
                     q.AskPrice=Double.valueOf(line[5].toString());
                     q.QuoteDate = Calendar.getInstance().getTime();
                     q.MidPrice = Calculator.CalculateMid(q.BidPrice,q.AskPrice);
-                    proc.QuoteEvent(q);
+                    if(q.MarketType.equalsIgnoreCase("AGG")) {
+                        proc.QuoteEvent(q);
+                    }
                 }
                 cnt++;
             }
