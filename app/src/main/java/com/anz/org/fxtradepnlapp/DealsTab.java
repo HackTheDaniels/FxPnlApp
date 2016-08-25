@@ -2,6 +2,7 @@ package com.anz.org.fxtradepnlapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.anz.org.fxtradepnlapp.Common.PosPnl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,13 +29,18 @@ public class DealsTab extends Fragment{
     Button nextBtn;
     SimpleDateFormat df;
     String formattedDate;
+    ExpandableListView expListView;
+    List<String> listDataHeader = new ArrayList<String>();
+    HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+    View dealsTabView;
+    DealsListAdapter listAdapter;
 
     //Overriden method onCreateView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //Returning the layout file after inflating
-        View dealsTabView = inflater.inflate(R.layout.tab2, container, false);
+        dealsTabView = inflater.inflate(R.layout.tab2, container, false);
 
         //set the current date
         dateView = (TextView) dealsTabView.findViewById(R.id.dateValue);
@@ -70,6 +77,9 @@ public class DealsTab extends Fragment{
                 dateView.setText(formattedDate);
             }
         });
+
+        expListView = (ExpandableListView) dealsTabView.findViewById(R.id.lDealsExp);
+        prepareListData();
         return dealsTabView;
     }
 
@@ -77,7 +87,47 @@ public class DealsTab extends Fragment{
      * Preparing the list data
      */
     private void prepareListData() {
+
         List<Deal> lstDeals = new ArrayList<Deal>();
-        //lstDeals =((MainActivity)this.getActivity()).dataSource.GetDeals(0,"USD");
+        lstDeals =((MainActivity)this.getActivity()).dataSource.GetDeals(0,null);
+
+
+        List<String> chData = null;
+        // Adding child data\
+        for(int i = 0;i<lstDeals.size();i++) {
+
+
+            if(!listDataHeader.contains(lstDeals.get(i).BaseCcy + "," + lstDeals.get(i).DealCcy)) {
+                listDataHeader.add(lstDeals.get(i).BaseCcy + "," + lstDeals.get(i).DealCcy);
+                if(chData != null) {
+                    listDataChild.put(listDataHeader.get(listDataHeader.size()-2), chData);
+                }
+                chData= new ArrayList<String>();
+
+            }
+
+            SimpleDateFormat dt = new SimpleDateFormat("hh:mm:ss");
+            String formattedTime = dt.format(lstDeals.get(i).Date);
+            chData.add( String.format("%.2f",  lstDeals.get(i).Price) + "," + lstDeals.get(i).Quantity + "," + formattedTime + "," +  lstDeals.get(i).Buy);
+
+
+        }
+        if(chData != null) {
+            listDataChild.put(listDataHeader.get(listDataHeader.size() - 1), chData);
+        }
+        initializeList();
+    }
+
+    private void initializeList(){
+
+        listAdapter = new DealsListAdapter(dealsTabView.getContext(), listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+
+        Display newDisplay = this.getActivity().getWindowManager().getDefaultDisplay();
+        int width = newDisplay.getWidth();
+        expListView.setIndicatorBounds(width-150, width);
+
     }
 }

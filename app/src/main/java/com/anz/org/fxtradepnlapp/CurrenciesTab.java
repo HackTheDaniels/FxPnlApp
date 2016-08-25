@@ -57,7 +57,7 @@ public class CurrenciesTab extends Fragment{
 
         // get the listview
         expListView = (ExpandableListView) currenciesTabView.findViewById(R.id.lvExp);
-
+        //initializeList();
         // preparing list data
         //prepareListData();
 

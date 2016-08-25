@@ -96,7 +96,7 @@ public class AppDataSource
             if (ccy != null && ccy.length() > 0) {
                 query = query + " WHERE " + DealTable.DealCcy + " = " + ccy;
             }
-            query = query + " ORDER BY " + DealTable.Timestamp;
+            query = query + " ORDER BY " + DealTable.BaseCcy + "," + DealTable.DealCcy + "," + DealTable.Timestamp;
             if (numberOfDeals > 0) {
                 query = query + " DESC LIMIT " + numberOfDeals;
             }

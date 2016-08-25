@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/shapechild" >
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id = "@+id/RHE"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1,2,3,4"
+        android:padding="5dp">
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <ImageView
+
+                android:id="@+id/clck"
+                android:src="@drawable/perm_group_system_clock"
+                android:gravity="left"
+                android:layout_width="27dp"
+                android:layout_height="27dp"/>
+            <TextView
+                android:id="@+id/txtTime"
+                android:fontFamily="sans-serif"
+                android:layout_column="1"
+                android:text="0"
+                android:padding="3dip"
+                android:gravity="left"
+                android:textColor="#000000" />
+
+            <ImageView
+                android:id="@+id/imageDeal"
+                android:layout_column="2"
+                android:src="@drawable/pos_usd_icon"
+                 android:gravity="right"
+                android:layout_width="27dp"
+                android:layout_height="27dp"/>
+
+            <TextView
+                android:id="@+id/txtQnt"
+                android:fontFamily="sans-serif"
+                android:layout_column="3"
+                android:text="0"
+                android:paddingLeft="3dip"
+                android:gravity="right"
+                android:textColor="#000000"
+                />
+            <TextView
+                android:id="@+id/txtPriceByQnt"
+                android:fontFamily="sans-serif"
+                android:layout_column="3"
+                android:text="0"
+                android:gravity="right"
+                android:paddingRight="3dip"
+                android:textColor="#000000"
+                />
+            <TextView
+                android:id="@+id/txtBuyOrSell"
+                android:fontFamily="sans-serif"
+                android:layout_column="1"
+                android:text="0"
+                android:layout_marginLeft="4dip"
+                android:padding="1dip"
+                android:gravity="right"
+                android:textColor="#000000" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
