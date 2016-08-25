@@ -15,11 +15,14 @@ import android.widget.TextView;
 import com.anz.org.fxtradepnlapp.Common.PosPnl;
 import com.anz.org.fxtradepnlapp.Service.MyService;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by dell on 8/19/2016.
@@ -82,24 +85,6 @@ public class CurrenciesTab extends Fragment{
 
     }
 
-    //send message to service
-    public void onClickSendMessage ()
-    {
-        //only we need a handler to send message to any component.
-        //here we will get the handler from the service first, then
-        //we will send a message to the service.
-
-        if(null != MyService.mMyServiceHandler)
-        {
-            //first build the message and send.
-            //put a integer value here and get it from the service handler
-            //For Example: lets use 0 (msg.what = 0;) for getting service running status from the service
-            Message msg = new Message();
-            msg.what = 0;
-            msg.obj  = "Add your Extra Meaage Here"; // you can put extra message here
-            MyService.mMyServiceHandler.sendMessage(msg);
-        }
-    }
     /*
      * Preparing the list data
      */
@@ -114,9 +99,15 @@ public class CurrenciesTab extends Fragment{
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 
+        Date currentDate = new Date();
+
         // Adding data to exp list
         for(int i = 0;i<lstPosPnl.size();i++) {
-            listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.2f",  lstPosPnl.get(i).Pnl) + "," + lstPosPnl.get(i).Age);
+            Date pnlDate = lstPosPnl.get(i).Timestamp;
+            long diffInMillis = currentDate.getTime() - pnlDate.getTime();
+            long ageInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis);
+
+            listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.2f",  lstPosPnl.get(i).Pnl) + "," + ageInMinutes);
 
             List<String> chData = new ArrayList<String>();
             chData.add( String.format("%.2f",  lstPosPnl.get(i).Pos) + "," + String.format("%.4f",lstPosPnl.get(i).BookMid) + "," + String.format("%.2f",lstPosPnl.get(i).PosUsd) + "," + String.format("%.4f",lstPosPnl.get(i).MarketMid));

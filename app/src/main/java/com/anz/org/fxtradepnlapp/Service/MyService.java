@@ -39,11 +39,13 @@ public class MyService extends Service {
 	@Override
 	public int onStartCommand(Intent intent,int flags, int startId) {
 		// Perform your long running operations here.
-		Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
-		ReadRawFile();
-		final Thread t=new Thread(new RepeatingThread(processor));
-		t.start();
-		mIsServiceRunning = true;
+		if(!mIsServiceRunning) {
+			Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+			ReadRawFile();
+			final Thread t = new Thread(new RepeatingThread(processor));
+			t.start();
+			mIsServiceRunning = true;
+		}
 		return START_STICKY;
 	}
 

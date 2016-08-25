@@ -19,6 +19,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
+    private List<String> originalListDataHeader;
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
@@ -26,6 +27,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                  HashMap<String, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
+        this.originalListDataHeader = listDataHeader;
         this._listDataChild = listChildData;
     }
 
@@ -147,6 +149,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         imageView.setImageResource(this._context.getResources().getIdentifier("drawable/" + pngName, null, this._context.getPackageName()));
 
         return convertView;
+    }
+
+    public void filterData(String query){
+
+        query = query.toLowerCase();
+       // Log.v("MyListAdapter", String.valueOf(continentList.size()));
+        _listDataHeader.clear();
+
+        if(query.isEmpty()){
+            _listDataHeader.addAll(originalListDataHeader);
+        }
+        else {
+
+            for(String header: originalListDataHeader){
+                if(header.contains(query))
+                    _listDataHeader.add(header);
+            }
+        }
+
+       // Log.v("MyListAdapter", String.valueOf(continentList.size()));
+        notifyDataSetChanged();
+
     }
 
     @Override

@@ -175,7 +175,7 @@ public class MathProcessor
             currentPnl.MarketMid = marketMid;// Will need this in case this is the first deal.
             currentPnl.BookMid = Calculator.CalculateMid(price.SellPrice, price.BuyPrice);
             double newPnl= currentPnl.Pnl;
-            threshHoldCalculation(oldPnl,newPnl);
+            threshHoldCalculation(oldPnl,123);
         }
     }
 
@@ -192,9 +192,9 @@ public class MathProcessor
             p.PosUsd = Calculator.CalculatePosUSD(p.Pos, quote.MidPrice);
             double oldPnl=p.Pnl;
             p.Pnl = Calculator.CalculatePnL(quote.MidPrice,price.BuyPrice,price.SellPrice,p.PosUsd);
-            double newPnl=p.Pnl;
+            //double newPnl=p.Pnl;
             dataSource.AddUpdatePosPnl(p, true);
-            threshHoldCalculation(oldPnl,newPnl);
+            threshHoldCalculation(oldPnl,123);
         }
     }
 
@@ -251,9 +251,9 @@ public class MathProcessor
         Log.d(Constants.APPNAME, "QuoteEvent: Done Adding to database " + quote.QuoteCcy);
     }
 
-    public void threshHoldCalculation(double prePnl, double currPnl)
+    public void threshHoldCalculation(double prePnl, double newPnl)
     {
-        double per=((currPnl-prePnl)/prePnl)*100;
+        double per=((newPnl-prePnl)/prePnl)*100;
         if(per <-25)
         {
             sendnotification(per);
