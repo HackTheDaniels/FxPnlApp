@@ -13,6 +13,7 @@
         <ImageView
             android:gravity="center_vertical"
             android:id="@+id/imgBaseCCYFlag"
+            android:layout_margin="5dp"
             android:layout_height="40px"
             android:layout_width="45px"
 />
@@ -24,13 +25,14 @@
             android:textAlignment="center"
             android:fontFamily="sans-serif"
             android:textColor="#000000"
-            android:layout_width="150px"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             />
 
         <ImageView
             android:gravity="center_vertical"
             android:id="@+id/imgSecondCCYFlag"
+            android:layout_margin="5dp"
             android:layout_height="40px"
             android:layout_width="45px"
 

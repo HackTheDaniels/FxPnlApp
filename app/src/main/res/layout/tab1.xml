@@ -24,11 +24,22 @@
             android:textSize="15dp"
             android:textColor="#000000" />
 
-        <Button
-            android:id="@+id/serviceBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+        <!--<Button-->
+            <!--android:id="@+id/btnCurrSort"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:text="Currency"-->
+            <!--android:padding="2dp"-->
+            <!--android:textColor="#000000"-->
+            <!--android:background="@drawable/shape"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/serviceBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--/>-->
 
     </LinearLayout>
 

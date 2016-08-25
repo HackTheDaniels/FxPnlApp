@@ -42,16 +42,16 @@ public class CurrenciesTab extends Fragment{
         //Returning the layout file after inflating
         currenciesTabView = inflater.inflate(R.layout.tab1, container, false);
 
-        serviceBtn = (Button)currenciesTabView.findViewById(R.id.serviceBtn);
-        serviceBtn.setOnClickListener( new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                //prepareListData();
-                onClickSendMessage();
-            }
-        });
+//        serviceBtn = (Button)currenciesTabView.findViewById(R.id.serviceBtn);
+//        serviceBtn.setOnClickListener( new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                //prepareListData();
+//                onClickSendMessage();
+//            }
+//        });
         //set the current date
         dateView = (TextView) currenciesTabView.findViewById(R.id.dateValue);
         Calendar c = Calendar.getInstance();
@@ -64,7 +64,7 @@ public class CurrenciesTab extends Fragment{
         expListView = (ExpandableListView) currenciesTabView.findViewById(R.id.lvExp);
         //initializeList();
         // preparing list data
-        //prepareListData();
+        prepareListData();
 
         return currenciesTabView;
     }
@@ -78,7 +78,7 @@ public class CurrenciesTab extends Fragment{
 
         Display newDisplay = this.getActivity().getWindowManager().getDefaultDisplay();
         int width = newDisplay.getWidth();
-        expListView.setIndicatorBounds(width-150, width);
+        expListView.setIndicatorBounds(width-180, width);
 
     }
 
@@ -105,44 +105,16 @@ public class CurrenciesTab extends Fragment{
      */
     public void prepareListData() {
 
+
+        if( ((MainActivity)this.getActivity()) == null) return;
+        if( ((MainActivity)this.getActivity()).dataSource == null) return;
         List<PosPnl> lstPosPnl = new ArrayList<PosPnl>();
         lstPosPnl =((MainActivity)this.getActivity()).dataSource.GetPosPnl(null);
-//        PosPnl p1 = new PosPnl();
-//        p1.Id = 1;
-//        p1.Ccy = "USD";
-//        p1.Pnl = 2.3;
-//        p1.Pos = 0.63;
-//        p1.PosUsd = -0.64;
-//        p1.Age = 60;
-//        p1.BookBid = 0.76;
-//        p1.MarketBid = -0.78;
-//        lstPosPnl.add(p1);
-//
-//        PosPnl p2 = new PosPnl();
-//        p2.Id = 2;
-//        p2.Ccy = "AUD";
-//        p2.Pnl = 3.4;
-//        p2.Pos = -0.73;
-//        p2.PosUsd = 0.74;
-//        p2.Age = 110;
-//        p2.BookBid = -0.86;
-//        p2.MarketBid = 0.88;
-//        lstPosPnl.add(p2);
-//
-//        PosPnl p3 = new PosPnl();
-//        p3.Id = 2;
-//        p3.Ccy = "GBP";
-//        p3.Pnl = 3.4;
-//        p3.Pos = -0.234;
-//        p3.PosUsd = -0.232;
-//        p3.Age = 4;
-//        p3.BookBid = 0.86;
-//        p3.MarketBid = 0.88;
-//        lstPosPnl.add(p3);
 
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
 
-
-        // Adding child data\
+        // Adding data to exp list
         for(int i = 0;i<lstPosPnl.size();i++) {
             listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.2f",  lstPosPnl.get(i).Pnl) + "," + lstPosPnl.get(i).Age);
 

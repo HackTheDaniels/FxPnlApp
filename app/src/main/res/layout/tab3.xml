@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="#EEEEEE"
+    android:background="@drawable/shapegrad"
     tools:context="com.anz.org.fxtradepnlapp.QuotesTab">
 
     <LinearLayout
@@ -18,36 +18,33 @@
 
         <Button
             android:id="@+id/btnPrevDateQ"
-            android:layout_width="30px"
-            android:layout_height="30px"
+            android:layout_width="25px"
+            android:layout_height="25px"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/previous_icon"/>
 
         <TextView
             android:id="@+id/dateValueQ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
+            android:layout_margin="2dp"
+            android:layout_gravity="center_vertical"
             android:textSize="15dp"
             android:textColor="#000000" />
 
         <Button
             android:id="@+id/btnNextDateQ"
-            android:layout_width="30px"
-            android:layout_height="30px"
+            android:layout_width="25px"
+            android:layout_height="25px"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/next_icon"/>
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/quotesListView"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
-        android:layout_margin="8dp"/>
-
-   <!-- <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id = "@+id/RHE1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:stretchColumns="1,2,3,4,5"
         android:padding="2dp">
 
@@ -89,49 +86,13 @@
                 android:text="Ask"/>
 
         </TableRow>
+    </TableLayout>
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/imgBaseCCYFlag"
-                android:layout_height="40px"
-                android:layout_width="45px"
-                android:layout_margin="5dp" />
-
-            <TextView
-                android:id="@+id/txtListSymbol"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:fontFamily="sans-serif"
-                android:textColor="#000000"
-                />
-
-            <ImageView
-                android:id="@+id/imgQuoteCCYFlag"
-                android:layout_height="40px"
-                android:layout_width="45px"
-                android:layout_margin="5dp" />
-
-            <TextView android:layout_column="1"
-                android:id="@+id/txtListBid"
-                android:textSize="12dp"
-                android:fontFamily="sans-serif"
-                android:textColor="#000000"
-                android:gravity="center"
-                />
-
-            <TextView android:layout_column="2"
-                android:id="@+id/txtListAsk"
-                android:textSize="12dp"
-                android:fontFamily="sans-serif"
-                android:textColor="#000000"
-                android:gravity="center"
-                />
-        </TableRow>
-    </TableLayout>-->
+    <ExpandableListView
+        android:id="@+id/quotesListView"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"/>
 
 </LinearLayout>
 

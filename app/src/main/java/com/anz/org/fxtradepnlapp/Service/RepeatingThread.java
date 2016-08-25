@@ -8,7 +8,9 @@ import android.util.Log;
 import com.anz.org.fxtradepnlapp.Common.Deal;
 import com.anz.org.fxtradepnlapp.Common.Quote;
 import com.anz.org.fxtradepnlapp.CurrenciesTab;
+import com.anz.org.fxtradepnlapp.DealsTab;
 import com.anz.org.fxtradepnlapp.MainActivity;
+import com.anz.org.fxtradepnlapp.QuotesTab;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,7 +90,18 @@ public class RepeatingThread implements Runnable {
     {
         Message msgToActivity = new Message();
         msgToActivity.what = 0;
+
         CurrenciesTab.mUiHandler.sendMessage(msgToActivity);
+        if(DealsTab.mUiDealHandler != null) {
+            Message msgToActivity1 = new Message();
+            msgToActivity1.what = 0;
+            DealsTab.mUiDealHandler.sendMessage(msgToActivity1);
+        }
+        if(QuotesTab.mUiQuoteHandler != null) {
+            Message msgToActivity2 = new Message();
+            msgToActivity2.what = 0;
+            QuotesTab.mUiQuoteHandler.sendMessage(msgToActivity2);
+        }
     }
     private void sendEvent()
     {

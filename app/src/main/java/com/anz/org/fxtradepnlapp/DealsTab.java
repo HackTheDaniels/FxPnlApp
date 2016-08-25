@@ -1,6 +1,8 @@
 package com.anz.org.fxtradepnlapp;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -34,10 +36,12 @@ public class DealsTab extends Fragment{
     HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
     View dealsTabView;
     DealsListAdapter listAdapter;
+    public static Handler mUiDealHandler = null;
 
     //Overriden method onCreateView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        handleServiceMsg();
 
         //Returning the layout file after inflating
         dealsTabView = inflater.inflate(R.layout.tab2, container, false);
@@ -89,10 +93,15 @@ public class DealsTab extends Fragment{
     private void prepareListData() {
 
         List<Deal> lstDeals = new ArrayList<Deal>();
+
+        if( ((MainActivity)this.getActivity()) == null) return;
+        if(((MainActivity)this.getActivity()).dataSource == null) return;
         lstDeals =((MainActivity)this.getActivity()).dataSource.GetDeals(0,null);
 
 
         List<String> chData = null;
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
         // Adding child data\
         for(int i = 0;i<lstDeals.size();i++) {
 
@@ -108,7 +117,8 @@ public class DealsTab extends Fragment{
 
             SimpleDateFormat dt = new SimpleDateFormat("hh:mm:ss");
             String formattedTime = dt.format(lstDeals.get(i).Date);
-            chData.add( String.format("%.2f",  lstDeals.get(i).Price) + "," + lstDeals.get(i).Quantity + "," + formattedTime + "," +  lstDeals.get(i).Buy);
+            if(chData != null)
+                chData.add( String.format("%.2f",  lstDeals.get(i).Price) + "," + lstDeals.get(i).Quantity + "," + formattedTime + "," +  lstDeals.get(i).Buy);
 
 
         }
@@ -127,7 +137,27 @@ public class DealsTab extends Fragment{
 
         Display newDisplay = this.getActivity().getWindowManager().getDefaultDisplay();
         int width = newDisplay.getWidth();
-        expListView.setIndicatorBounds(width-150, width);
+        expListView.setIndicatorBounds(width-180, width);
 
     }
+
+    private void handleServiceMsg()
+    {
+        mUiDealHandler = new Handler() // Receive messages from service class
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case 0:
+                        prepareListData();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        };
+    }
+
 }
