@@ -137,7 +137,7 @@ public class DealsTab extends Fragment{
 
         Display newDisplay = this.getActivity().getWindowManager().getDefaultDisplay();
         int width = newDisplay.getWidth();
-        expListView.setIndicatorBounds(width-180, width);
+        expListView.setIndicatorBounds(width-210, width);
 
     }
 

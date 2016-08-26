@@ -11,8 +11,8 @@
             android:gravity="center_vertical"
             android:id="@+id/imgBaseCCYFlag"
             android:layout_margin="5dp"
-            android:layout_height="28dp"
-            android:layout_width="33dp" />
+            android:layout_height="30dp"
+            android:layout_width="34dp" />
 
         <TextView
             android:id="@+id/txtListSymbol"
@@ -29,8 +29,8 @@
             android:gravity="center_vertical"
             android:id="@+id/imgSecondCCYFlag"
             android:layout_margin="5dp"
-            android:layout_height="28dp"
-            android:layout_width="33dp"
+            android:layout_height="30dp"
+            android:layout_width="34dp"
 
             />
 

@@ -22,8 +22,8 @@
 
         <ImageView
             android:id="@+id/imgViewFlag"
-            android:layout_height="28dp"
-            android:layout_width="33dp"
+            android:layout_height="30dp"
+            android:layout_width="34dp"
             android:layout_margin="5dp" />
 
         <TextView android:layout_column="1"

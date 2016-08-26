@@ -26,11 +26,19 @@
                 android:textSize="17dp"
                 android:gravity="right"
                 android:textColor="#000000" />
-
+            <TextView
+                android:id="@+id/pos2"
+                android:fontFamily="sans-serif"
+                android:layout_column="2"
+                android:text="Book"
+                android:padding="1dip"
+                android:gravity="right"
+                android:textSize="12dp"
+                />
             <ImageView
                 android:id="@+id/imagePos"
                 android:layout_column="2"
-                android:src="@drawable/bid"
+                android:src="@drawable/pos_icon"
                 android:gravity="left"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
@@ -67,10 +75,21 @@
                 android:textSize="17dp"
                 android:textColor="#000000" />
 
+
+            <TextView
+                android:id="@+id/pos1"
+                android:fontFamily="sans-serif"
+                android:layout_column="2"
+                android:text="Mrkt"
+                android:padding="1dip"
+                android:gravity="right"
+                android:textSize="12dp"
+                />
+
             <ImageView
                 android:id="@+id/imageUSDPos"
                 android:layout_column="2"
-                android:src="@drawable/market"
+                android:src="@drawable/pos_usd_icon"
                 android:gravity="left"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
@@ -86,15 +105,24 @@
                 android:textColor="#000000"
                 />
 
-            <ImageView
-                android:id="@+id/imageUSDPos1"
-                android:fontFamily="sans-serif"
-                android:layout_column="4"
-                android:src="@drawable/flattenrisk"
-                android:gravity="left"
-                android:layout_width="25dp"
-                android:layout_height="25dp"/>
+
+
+
         </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:layout_column="4"
+                android:id="@+id/flattenBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right"
+                android:text="Flatten Risk"
+                android:textSize="8dp"
+                />
+            </TableRow>
     </TableLayout>
 
 </LinearLayout>

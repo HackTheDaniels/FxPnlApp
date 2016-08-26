@@ -107,9 +107,9 @@ public class AppDataSource
             if (ccy != null && ccy.length() > 0) {
                 query = query + " WHERE " + DealTable.DealCcy + " = " + ccy;
             }
-            query = query + " ORDER BY " + DealTable.Timestamp;
+            query = query + " ORDER BY " + DealTable.BaseCcy + "," + DealTable.DealCcy + "," + DealTable.Timestamp + " DESC ";
             if (numberOfDeals > 0) {
-                query = query + " DESC LIMIT " + numberOfDeals;
+                query = query + " LIMIT " + numberOfDeals;
             }
             cur = db.rawQuery(query, null);
             if (cur != null & cur.moveToFirst())
@@ -265,9 +265,9 @@ public class AppDataSource
             if (ccy != null && ccy.length() > 0) {
                 query = query + " WHERE " + QuoteTable.QuoteCcy + " = " + ccy;
             }
-            query = query + " ORDER BY " + QuoteTable.Timestamp;
+            query = query + " ORDER BY " + QuoteTable.Timestamp + " DESC ";
             if (limit > 0) {
-                query = query + " DESC LIMIT " + limit;
+                query = query + " LIMIT " + limit;
             }
             Cursor cur = db.rawQuery(query, null);
             if (cur != null  && cur.moveToFirst()) {
@@ -320,7 +320,7 @@ public class AppDataSource
             pnl.MarketMid = cur.isNull(5) ? 0: cur.getDouble(5);
             pnl.Starred = cur.getInt(6)== 0? false:true;
             pnl.Timestamp = new Date(cur.getLong(7));
-            pnl.PosUsd = cur.isNull(8) ? 0 : cur.getDouble(2);
+            pnl.PosUsd = cur.isNull(8) ? 0 : cur.getDouble(8);
             pnl.Id = cur.getInt(9);
         }
         catch (Exception ex)
