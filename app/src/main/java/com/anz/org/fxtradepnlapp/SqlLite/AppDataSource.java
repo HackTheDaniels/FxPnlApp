@@ -88,6 +88,7 @@ public class AppDataSource
         db.delete(PosPnLTable.TableName, null, null);
         db.delete(QuoteTable.TableName, null, null);
         db.delete(PosPnlHistoryTable.TableName, null, null);
+        Log.d(Constants.APPNAME, "DeleteAllTableValues");
     }
 
     public List<Deal> GetDeals(int numberOfDeals, String ccy)

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/shapegrad"
+    tools:context="com.anz.org.fxtradepnlapp.PnlTab">
+
+
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id = "@+id/RHE1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1,2"
+        android:padding="2dp">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Spinner
+
+                android:id="@+id/spinner1"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+/>
+
+        </TableRow>
+
+
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="5dp"
+>
+            <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:text="1 D"
+                android:onClick="goButtonClicked" android:id="@+id/OneDayButton"></Button>
+
+            <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:text="5 D"
+                android:onClick="goButtonClicked" android:id="@+id/FiveDayButton"></Button>
+
+            <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:text="10 D"
+                android:onClick="goButtonClicked" android:id="@+id/TenDayButton"></Button>
+
+            <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:text="6 H"
+                android:onClick="goButtonClicked" android:id="@+id/sixHButton"></Button>
+
+                <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" android:text="3 H"
+                    android:onClick="goButtonClicked" android:id="@+id/threeHButton"></Button>
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow  android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:id="@+id/graph" />
+        </TableRow>
+    </TableLayout>
+
+
+</LinearLayout>
+
+

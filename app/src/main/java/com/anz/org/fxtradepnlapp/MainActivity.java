@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         tabLayout.addTab(tabLayout.newTab().setText("Deals"));
         tabLayout.addTab(tabLayout.newTab().setText("Quotes"));
+        tabLayout.addTab(tabLayout.newTab().setText("Trend"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         //Initializing viewPager
@@ -299,6 +301,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
+    public void onFlattenRisk(View v)
+    {
+        onClickSendMessage(v);
+        Log.d("bla", "onFlattenRisk: ");
+    }
 
     //send message to service
     public void onClickSendMessage (View v)
@@ -314,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             //For Example: lets use 0 (msg.what = 0;) for getting service running status from the service
             Message msg = new Message();
             msg.what = 0;
-            msg.obj  = "Add your Extra Meaage Here"; // you can put extra message here
+            msg.obj  = "AUD"; // you can put extra message here
             MyService.mMyServiceHandler.sendMessage(msg);
         }
     }

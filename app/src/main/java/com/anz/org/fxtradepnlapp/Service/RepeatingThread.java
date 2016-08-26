@@ -43,7 +43,6 @@ public class RepeatingThread implements Runnable {
         try{
             sendEvent();
             serviceHandler();
-            sendRefreshUI();
         }
         catch (Exception e)
         {
@@ -69,12 +68,9 @@ public class RepeatingThread implements Runnable {
                         {
                             Message msgToActivity = new Message();
                             msgToActivity.what = 0;
-                            if(true ==MyService.mIsServiceRunning)
-                                msgToActivity.obj  = "Request Received. Service is Running"; // you can put extra message here
-                            else
-                                msgToActivity.obj  = "Request Received. Service is not Running"; // you can put extra message here
-
-                            CurrenciesTab.mUiHandler.sendMessage(msgToActivity);
+                            String ccy=String.valueOf(msg.obj);
+                            proc.FlattenRisk(ccy);
+                            //CurrenciesTab.mUiHandler.sendMessage(msgToActivity);
                         }
 
                         break;
@@ -92,11 +88,20 @@ public class RepeatingThread implements Runnable {
         msgToActivity.what = 0;
 
         CurrenciesTab.mUiHandler.sendMessage(msgToActivity);
+
+    }
+
+    private void refreshDealUI()
+    {
         if(DealsTab.mUiDealHandler != null) {
             Message msgToActivity1 = new Message();
             msgToActivity1.what = 0;
             DealsTab.mUiDealHandler.sendMessage(msgToActivity1);
         }
+    }
+
+    private void refreshQuoteUI()
+    {
         if(QuotesTab.mUiQuoteHandler != null) {
             Message msgToActivity2 = new Message();
             msgToActivity2.what = 0;
@@ -106,6 +111,8 @@ public class RepeatingThread implements Runnable {
     private void sendEvent()
     {
         int cnt=0;
+        boolean isDealRecord=false;
+        boolean isQuoteRecord=false;
         List<String> rawData=BufferedData.GetData();
         for (String row:rawData)
         {
@@ -120,7 +127,9 @@ public class RepeatingThread implements Runnable {
             Time  mktTime= java.sql.Time.valueOf(strTime);
             if(currentTime.equals(mktTime) ||(currentTime.after(mktTime) && (lastProcessedTime == null || lastProcessedTime.before(mktTime))))
             {
+
                 if(line[0].equalsIgnoreCase("deal")) {
+                    isDealRecord = true;
                     Deal d =new Deal();
                     d.DealCcy=line[2].substring(0,3);
                     d.BaseCcy=line[2].substring(3);
@@ -131,6 +140,7 @@ public class RepeatingThread implements Runnable {
                     proc.DealEvent(d);
                 }
                 else {
+                    isQuoteRecord = true;
                     Quote q=new Quote();
                     q.QuoteCcy=line[2].substring(0,3);
                     q.BaseCcy=line[2].substring(3);
@@ -146,6 +156,15 @@ public class RepeatingThread implements Runnable {
                 cnt++;
             }
 
+
         }
+        if(isDealRecord) {
+            refreshDealUI();
+        }
+        if(isQuoteRecord)
+            refreshQuoteUI();
+        if(isDealRecord || isQuoteRecord)
+            sendRefreshUI();
+
     }
 }

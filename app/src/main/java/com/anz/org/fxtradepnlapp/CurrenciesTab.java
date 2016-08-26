@@ -38,6 +38,7 @@ public class CurrenciesTab extends Fragment{
     Button serviceBtn;
     View currenciesTabView;
 
+
     //Overriden method onCreateView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,16 +46,7 @@ public class CurrenciesTab extends Fragment{
         //Returning the layout file after inflating
         currenciesTabView = inflater.inflate(R.layout.tab1, container, false);
 
-//        serviceBtn = (Button)currenciesTabView.findViewById(R.id.serviceBtn);
-//        serviceBtn.setOnClickListener( new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                //prepareListData();
-//                onClickSendMessage();
-//            }
-//        });
+
         //set the current date
         dateView = (TextView) currenciesTabView.findViewById(R.id.dateValue);
         Calendar c = Calendar.getInstance();
@@ -115,7 +107,7 @@ public class CurrenciesTab extends Fragment{
             listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.2f",  lstPosPnl.get(i).Pnl) + "," + age);
 
             List<String> chData = new ArrayList<String>();
-            chData.add( String.format("%.2f",  lstPosPnl.get(i).Pos) + "," + String.format("%.4f",lstPosPnl.get(i).BookMid) + "," + String.format("%.2f",lstPosPnl.get(i).PosUsd) + "," + String.format("%.4f",lstPosPnl.get(i).MarketMid));
+            chData.add( String.format("%.2f",  lstPosPnl.get(i).Pos) + "," + String.format("%.4f",lstPosPnl.get(i).BookMid) + "," + String.format("%.2f",lstPosPnl.get(i).PosUsd) + "," + String.format("%.4f",lstPosPnl.get(i).MarketMid) + "," + lstPosPnl.get(i).Ccy );
 
             listDataChild.put(listDataHeader.get(i), chData);
         }
@@ -139,5 +131,16 @@ public class CurrenciesTab extends Fragment{
                 }
             }
         };
+    }
+
+    public void OnClickMessage(View v)
+    {
+        if(null !=MyService.mMyServiceHandler) {
+        Message msg=new Message();
+            msg.what=0;
+            msg.obj="AUD";
+            MyService.mMyServiceHandler.sendMessage(msg);
+        }
+
     }
 }

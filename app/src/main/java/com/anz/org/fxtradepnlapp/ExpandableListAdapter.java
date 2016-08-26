@@ -76,7 +76,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView txtPosUSDValue = (TextView) convertView
                 .findViewById(R.id.posUSDValue);
 
-        txtPosUSDValue.setText("$"+childContents[2]);
+        txtPosUSDValue.setText("$ "+childContents[2]);
         if(childContents[2].startsWith("-"))
             txtPosUSDValue.setTextColor(Color.RED);
         else
@@ -91,6 +91,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         else
             txtMarketBidValue.setTextColor(Color.BLACK);
 
+        TextView txtCurrentCCy = (TextView) convertView
+                .findViewById(R.id.currCCy);
+        txtPosUSDValue.setText(childContents[4]);
         return convertView;
     }
 

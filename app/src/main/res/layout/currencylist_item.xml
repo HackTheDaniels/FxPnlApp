@@ -113,9 +113,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center">
+
+            <TextView
+                android:id="@+id/currCCy"
+            android:visibility="invisible"
+                />
+
             <Button
                 android:layout_column="4"
                 android:id="@+id/flattenBtn"
+                android:onClick="onFlattenRisk"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="right"

@@ -175,7 +175,7 @@ public class MathProcessor
             currentPnl.MarketMid = marketMid;// Will need this in case this is the first deal.
             currentPnl.BookMid = Calculator.CalculateMid(price.SellPrice, price.BuyPrice);
             double newPnl= currentPnl.Pnl;
-            threshHoldCalculation(oldPnl,123);
+            threshHoldCalculation(oldPnl,newPnl,deal.DealCcy);
         }
     }
 
@@ -192,9 +192,9 @@ public class MathProcessor
             p.PosUsd = Calculator.CalculatePosUSD(p.Pos, quote.MidPrice);
             double oldPnl=p.Pnl;
             p.Pnl = Calculator.CalculatePnL(quote.MidPrice,price.BuyPrice,price.SellPrice,p.PosUsd);
-            //double newPnl=p.Pnl;
+            double newPnl=p.Pnl;
             dataSource.AddUpdatePosPnl(p, true);
-            threshHoldCalculation(oldPnl,123);
+            threshHoldCalculation(oldPnl,newPnl,ccy);
         }
     }
 
@@ -251,19 +251,35 @@ public class MathProcessor
         Log.d(Constants.APPNAME, "QuoteEvent: Done Adding to database " + quote.QuoteCcy);
     }
 
-    public void threshHoldCalculation(double prePnl, double newPnl)
+    public void threshHoldCalculation(double prePnl, double newPnl,String ccy)
     {
+        if(prePnl == 0 || newPnl ==0)
+            return;
+
         double per=((newPnl-prePnl)/prePnl)*100;
-        if(per <-25)
+        if(per <-25 || per >25 )
         {
-            sendnotification(per);
+            sendnotification(per,ccy);
         }
     }
-    public  void sendnotification(double per)
+
+    public void FlattenRisk(String ccy) {
+        List<PosPnl> pnl = dataSource.GetPosPnl("'" + ccy + "'");
+        if (pnl.size() > 0) {
+            PosPnl p = pnl.get(0);
+            p.Pos = 0;
+            p.PosUsd = 0;
+            p.Pnl = 0;
+            ClearWeightedPrice(ccy);
+            dataSource.AddUpdatePosPnl(pnl.get(0), true);
+        }
+    }
+
+    public  void sendnotification(double per,String ccy)
     {
         Notification n  = new Notification.Builder(mainCtx)
-                .setContentTitle("Threshold reahced +"+per)
-                .setContentText("Subject")
+                .setContentTitle("Threshold reached")
+                .setContentText("Threshold reached for " + ccy)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true).build();
 
