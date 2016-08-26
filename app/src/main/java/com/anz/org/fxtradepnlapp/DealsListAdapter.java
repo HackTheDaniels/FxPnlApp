@@ -72,7 +72,7 @@ public class DealsListAdapter extends BaseExpandableListAdapter {
 
         TextView txtPriceByQnt = (TextView) convertView
                 .findViewById(R.id.txtPriceByQnt);
-        txtPriceByQnt.setText("/" + childContents[1] );
+        txtPriceByQnt.setText(childContents[1] );
 
         TextView txtBuyOrSell = (TextView) convertView
                 .findViewById(R.id.txtBuyOrSell);

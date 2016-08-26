@@ -147,7 +147,8 @@ public class AppDataSource
                 if(!ignoreStarred) {
                     values.put(PosPnLTable.Starred, pp.Starred);
                 }
-                values.put(PosPnLTable.Timestamp, Calendar.getInstance().get(Calendar.SECOND));
+                values.put(PosPnLTable.Timestamp, Calendar.getInstance().getTime().getTime());
+
                 db.update(PosPnLTable.TableName, values, PosPnLTable.Id + " = ?", new String[]{String.valueOf(pp.Id)});
             } else {
                 Log.i(Constants.APPNAME, "AddUpdatePosPnl(Add): " + pp.Ccy + " ,pos :" + pp.Pos + ",pnl:" + pp.Pnl );
@@ -160,7 +161,8 @@ public class AppDataSource
                 values.put(PosPnLTable.BookMid, pp.BookMid);
                 values.put(PosPnLTable.MarketMid, pp.MarketMid);
                 values.put(PosPnLTable.Starred, pp.Starred);
-                values.put(PosPnLTable.Timestamp, Calendar.getInstance().get(Calendar.SECOND));
+                //values.put(PosPnLTable.Timestamp, Calendar.getInstance().get(Calendar.SECOND));
+                values.put(PosPnLTable.Timestamp, Calendar.getInstance().getTime().getTime());
                 db.insert(PosPnLTable.TableName, null, values);
             }
             AddHistoryPosPnl(pp);

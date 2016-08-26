@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.anz.org.fxtradepnlapp.Common.PosPnl;
 import com.anz.org.fxtradepnlapp.Service.MyService;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -99,9 +98,12 @@ public class CurrenciesTab extends Fragment{
             long diffInMillis = currentDate.getTime() - pnlDate.getTime();
             long ageInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis);
             String age="";
-            age = ""+ageInMinutes;
+            age = ""+ageInMinutes + " ";
             if(ageInMinutes > 120) {
-                age =">120";
+                age =">120 ";
+            }
+            if(ageInMinutes <= 0) {
+                age ="<1 ";
             }
 
             listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.2f",  lstPosPnl.get(i).Pnl) + "," + age);

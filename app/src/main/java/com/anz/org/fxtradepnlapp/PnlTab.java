@@ -48,8 +48,9 @@ public class PnlTab extends Fragment  {
         currencies.add("CHN");
         currencies.add("EUR");
 //
-      //   Spinner sp = (Spinner) PnlTabView.findViewById(R.id.spinner1);
-       //  ArrayAdapter<String> ard=new ArrayAdapter<String>(this,R.id.spinner1,currencies);
+        // Spinner sp = (Spinner) PnlTabView.findViewById(R.id.spinner1);
+         //ArrayAdapter<Object> ard=new ArrayAdapter<Object>(this,R.layout.support_simple_spinner_dropdown_item,currencies);
+
 
         return PnlTabView;
     }

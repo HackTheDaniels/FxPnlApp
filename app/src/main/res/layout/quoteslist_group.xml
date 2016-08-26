@@ -19,8 +19,10 @@
             android:layout_height="wrap_content"
             android:gravity="left">
 
+
+
             <ImageView
-                android:id="@+id/imgBaseCCYFlag"
+                android:id="@+id/imgQuoteCCYFlag"
                 android:layout_height="30dp"
                 android:layout_width="34dp"
                 android:layout_gravity="center_vertical" />
@@ -39,7 +41,7 @@
                 />
 
             <ImageView
-                android:id="@+id/imgQuoteCCYFlag"
+                android:id="@+id/imgBaseCCYFlag"
                 android:layout_height="30dp"
                 android:layout_width="34dp"
                 android:layout_gravity="center_vertical" />

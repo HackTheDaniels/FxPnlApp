@@ -2,9 +2,11 @@ package com.anz.org.fxtradepnlapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +29,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private ViewPager viewPager;
 
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
+
+    private final String PrefName = "FXHelp";
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -145,42 +150,59 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //Adding onTabSelectedListener to swipe views
         tabLayout.setOnTabSelectedListener(this);
         createConnection();
-        new ShowcaseView.Builder(this)
-                .setTarget(new ViewTarget(R.id.tabLayout, this))
-                .setContentTitle("Home Screen")
-                .setContentText("Shows current PnL Status. Swipe right to view Deals, Quotes information.")
-                .hideOnTouchOutside()
-                .setShowcaseEventListener(new OnShowcaseEventListener() {
+        boolean isHelp = GetFxAppPreferences(PrefName);
+        if(!isHelp) {
+            new ShowcaseView.Builder(this)
+                    .setTarget(new ViewTarget(R.id.tabLayout, this))
+                    .setContentTitle("Home Screen")
+                    .setContentText("Shows current PnL Status. Swipe right to view Deals, Quotes information.")
+                    .hideOnTouchOutside()
+                    .setShowcaseEventListener(new OnShowcaseEventListener() {
 
-                    @Override
-                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                        new ShowcaseView.Builder(MainActivity.this)
-                                .setTarget(new ViewTarget(R.id.search, MainActivity.this))
-                                .setContentTitle("Search")
-                                .setContentText("Search currency to filter.")
-                                .hideOnTouchOutside()
+                        @Override
+                        public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                            new ShowcaseView.Builder(MainActivity.this)
+                                    .setTarget(new ViewTarget(R.id.search, MainActivity.this))
+                                    .setContentTitle("Search")
+                                    .setContentText("Search currency to filter.")
+                                    .hideOnTouchOutside()
 
-                                .build();
-                    }
-                    @Override
-                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-                        Log.d("bla", "onShowcaseViewDidHide: ");
+                                    .build();
+                        }
 
-                    }
+                        @Override
+                        public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+                            Log.d("bla", "onShowcaseViewDidHide: ");
 
-                    @Override
-                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-                        Log.d("bla", "onShowcaseViewDidHide: ");
-                    }
+                        }
 
-                    @Override
-                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-                        Log.d("bla", "onShowcaseViewDidHide: ");
-                    }
-                } ).build();
+                        @Override
+                        public void onShowcaseViewShow(ShowcaseView showcaseView) {
+                            Log.d("bla", "onShowcaseViewDidHide: ");
+                        }
 
-                }
+                        @Override
+                        public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+                            Log.d("bla", "onShowcaseViewDidHide: ");
+                        }
+                    }).build();
+        }
+        PutFxAppPreferences(PrefName, true);
+    }
 
+    private void PutFxAppPreferences(String key, boolean value)
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    private boolean GetFxAppPreferences(String key)
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getBoolean(key, false);
+    }
 
 
     @Override
@@ -226,6 +248,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         mDrawerList.setItemChecked(position, true);
         setTitle(mNavItems.get(position).mTitle);
+
+        if(position == 2)
+        {
+            PutFxAppPreferences(PrefName, false);
+        }
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
@@ -343,8 +370,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     public void onFlattenRisk(View v)
     {
-        onClickSendMessage(v);
-        Log.d("bla", "onFlattenRisk: ");
+        TableRow parent = (TableRow)v.getParent();
+
+        TextView child = (TextView)parent.getChildAt(0);
+        String ccy = child.getText().toString();
+        if(ccy != "USD") {
+            onClickSendMessage(v);
+        }
+        Log.d("bla", "onFlattenRisk: " + ccy);
     }
 
     //send message to service
