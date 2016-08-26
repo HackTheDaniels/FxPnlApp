@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +32,9 @@ import android.widget.Toast;
 
 import com.anz.org.fxtradepnlapp.Service.MyService;
 import com.anz.org.fxtradepnlapp.SqlLite.AppDataSource;
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 
@@ -121,10 +125,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         //Adding the tabs using addTab() method
-        tabLayout.addTab(tabLayout.newTab().setText("Currencies"));
+        tabLayout.addTab(tabLayout.newTab().setText("Currency"));
 
-        tabLayout.addTab(tabLayout.newTab().setText("Deals"));
-        tabLayout.addTab(tabLayout.newTab().setText("Quotes"));
+        tabLayout.addTab(tabLayout.newTab().setText("Deal"));
+        tabLayout.addTab(tabLayout.newTab().setText("Quote"));
         tabLayout.addTab(tabLayout.newTab().setText("Trend"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -141,7 +145,43 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //Adding onTabSelectedListener to swipe views
         tabLayout.setOnTabSelectedListener(this);
         createConnection();
-    }
+        new ShowcaseView.Builder(this)
+                .setTarget(new ViewTarget(R.id.tabLayout, this))
+                .setContentTitle("Home Screen")
+                .setContentText("Shows current PnL Status. Swipe right to view Deals, Quotes information.")
+                .hideOnTouchOutside()
+                .setShowcaseEventListener(new OnShowcaseEventListener() {
+
+                    @Override
+                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                        new ShowcaseView.Builder(MainActivity.this)
+                                .setTarget(new ViewTarget(R.id.search, MainActivity.this))
+                                .setContentTitle("Search")
+                                .setContentText("Search currency to filter.")
+                                .hideOnTouchOutside()
+
+                                .build();
+                    }
+                    @Override
+                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+                        Log.d("bla", "onShowcaseViewDidHide: ");
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+                        Log.d("bla", "onShowcaseViewDidHide: ");
+                    }
+
+                    @Override
+                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+                        Log.d("bla", "onShowcaseViewDidHide: ");
+                    }
+                } ).build();
+
+                }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

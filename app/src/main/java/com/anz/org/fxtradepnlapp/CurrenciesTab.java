@@ -73,7 +73,7 @@ public class CurrenciesTab extends Fragment{
 
         Display newDisplay = this.getActivity().getWindowManager().getDefaultDisplay();
         int width = newDisplay.getWidth();
-        expListView.setIndicatorBounds(width-210, width);
+        expListView.setIndicatorBounds(width-240, width);
 
     }
 
@@ -105,9 +105,11 @@ public class CurrenciesTab extends Fragment{
             }
 
             listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.2f",  lstPosPnl.get(i).Pnl) + "," + age);
+            double mPnl =(lstPosPnl.get(i).Pos/100000);
+            double mPnlUsd =(lstPosPnl.get(i).PosUsd/100000);
 
             List<String> chData = new ArrayList<String>();
-            chData.add( String.format("%.2f",  lstPosPnl.get(i).Pos) + "," + String.format("%.4f",lstPosPnl.get(i).BookMid) + "," + String.format("%.2f",lstPosPnl.get(i).PosUsd) + "," + String.format("%.4f",lstPosPnl.get(i).MarketMid) + "," + lstPosPnl.get(i).Ccy );
+            chData.add( String.format("%.5f", mPnl) + "," + String.format("%.4f",lstPosPnl.get(i).BookMid) + "," + String.format("%.5f", mPnlUsd) + "," + String.format("%.4f",lstPosPnl.get(i).MarketMid) + "," + lstPosPnl.get(i).Ccy );
 
             listDataChild.put(listDataHeader.get(i), chData);
         }

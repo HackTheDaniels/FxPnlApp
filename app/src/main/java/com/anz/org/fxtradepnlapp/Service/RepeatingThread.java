@@ -70,7 +70,7 @@ public class RepeatingThread implements Runnable {
                             msgToActivity.what = 0;
                             String ccy=String.valueOf(msg.obj);
                             proc.FlattenRisk(ccy);
-                            //CurrenciesTab.mUiHandler.sendMessage(msgToActivity);
+                            sendRefreshUI();
                         }
 
                         break;

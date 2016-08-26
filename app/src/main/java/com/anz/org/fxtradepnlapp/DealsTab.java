@@ -106,8 +106,8 @@ public class DealsTab extends Fragment{
         for(int i = 0;i<lstDeals.size();i++) {
 
 
-            if(!listDataHeader.contains(lstDeals.get(i).BaseCcy + "," + lstDeals.get(i).DealCcy)) {
-                listDataHeader.add(lstDeals.get(i).BaseCcy + "," + lstDeals.get(i).DealCcy);
+            if(!listDataHeader.contains(lstDeals.get(i).DealCcy + "," + lstDeals.get(i).BaseCcy )) {
+                listDataHeader.add( lstDeals.get(i).DealCcy + "," + lstDeals.get(i).BaseCcy );
                 if(chData != null) {
                     listDataChild.put(listDataHeader.get(listDataHeader.size()-2), chData);
                 }
@@ -137,7 +137,7 @@ public class DealsTab extends Fragment{
 
         Display newDisplay = this.getActivity().getWindowManager().getDefaultDisplay();
         int width = newDisplay.getWidth();
-        expListView.setIndicatorBounds(width-210, width);
+        expListView.setIndicatorBounds(width-240, width);
 
     }
 

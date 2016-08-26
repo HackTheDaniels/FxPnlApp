@@ -93,7 +93,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         TextView txtCurrentCCy = (TextView) convertView
                 .findViewById(R.id.currCCy);
-        txtPosUSDValue.setText(childContents[4]);
+        txtCurrentCCy.setText(childContents[4]);
         return convertView;
     }
 

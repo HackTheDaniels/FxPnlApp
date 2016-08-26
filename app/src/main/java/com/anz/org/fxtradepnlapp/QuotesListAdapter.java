@@ -83,7 +83,7 @@ public class QuotesListAdapter extends BaseExpandableListAdapter {
         TextView txtListSymbol = (TextView) convertView
                 .findViewById(R.id.txtListSymbol);
 
-        txtListSymbol.setText(headerContents[0] + "/" + headerContents[1]);
+        txtListSymbol.setText(headerContents[1] + "/" + headerContents[0]);
 
         TextView txtListBid = (TextView) convertView
                 .findViewById(R.id.txtListBid);

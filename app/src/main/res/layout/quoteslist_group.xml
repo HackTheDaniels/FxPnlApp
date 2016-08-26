@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:stretchColumns="1,2,3,4,5"
+        android:stretchColumns="2,3"
  >
 
         <TableRow
@@ -29,7 +29,7 @@
                 android:id="@+id/txtListSymbol"
                 android:textSize="17dp"
                 android:gravity="center_vertical"
-                android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif"
