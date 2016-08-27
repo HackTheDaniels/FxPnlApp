@@ -153,6 +153,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         lblListCCYPnL.setTypeface(null, Typeface.BOLD);
         lblListCCYPnL.setText(headerContents[1]);
+        if(headerContents[1].startsWith("-"))
+            lblListCCYPnL.setTextColor(Color.RED);
+        else
+            lblListCCYPnL.setTextColor(Color.BLACK);
 
         lblListAge.setText(headerContents[2] +"min");
 
