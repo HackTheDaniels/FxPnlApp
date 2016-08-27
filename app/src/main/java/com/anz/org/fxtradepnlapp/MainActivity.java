@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mNavItems.add(new NavItem("Home", "Meetup destination", R.drawable.ic_menu_home));
+        mNavItems.add(new NavItem("Home", "PnL Dashboard", R.drawable.ic_menu_home));
         mNavItems.add(new NavItem("Preferences", "Change your preferences", R.drawable.ic_menu_settings));
         mNavItems.add(new NavItem("About", "Get to know about us", R.drawable.ic_menu_info));
 
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             new ShowcaseView.Builder(this)
                     .setTarget(new ViewTarget(R.id.tabLayout, this))
                     .setContentTitle("Home Screen")
+                    .setStyle(R.style.CustomShowcaseTheme)
                     .setContentText("Shows current PnL Status. Swipe right to view Deals, Quotes information.")
                     .hideOnTouchOutside()
                     .setShowcaseEventListener(new OnShowcaseEventListener() {
@@ -164,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             new ShowcaseView.Builder(MainActivity.this)
                                     .setTarget(new ViewTarget(R.id.search, MainActivity.this))
                                     .setContentTitle("Search")
+                                    .setStyle(R.style.CustomShowcaseTheme)
                                     .setContentText("Search currency to filter.")
                                     .hideOnTouchOutside()
 
@@ -378,6 +381,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             onClickSendMessage(v);
         }
         Log.d("bla", "onFlattenRisk: " + ccy);
+    }
+
+    public void onStarredClick(View v)
+    {
+        CheckBox chk = (CheckBox)v;
+        TableRow parent = (TableRow)v.getParent();
+
+        TextView child = (TextView)parent.getChildAt(0);
+        String ccy = child.getText().toString();
+        boolean b = chk.isChecked();
+        dataSource.MarkStarred(ccy, b);
     }
 
     //send message to service

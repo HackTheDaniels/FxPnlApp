@@ -106,12 +106,13 @@ public class CurrenciesTab extends Fragment{
                 age ="<1 ";
             }
 
-            listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.2f",  lstPosPnl.get(i).Pnl) + "," + age);
+            listDataHeader.add(lstPosPnl.get(i).Ccy + "," + String.format("%.4f",  lstPosPnl.get(i).Pnl) + "," + age);
             double mPnl =(lstPosPnl.get(i).Pos/100000);
             double mPnlUsd =(lstPosPnl.get(i).PosUsd/100000);
 
             List<String> chData = new ArrayList<String>();
-            chData.add( String.format("%.5f", mPnl) + "," + String.format("%.4f",lstPosPnl.get(i).BookMid) + "," + String.format("%.5f", mPnlUsd) + "," + String.format("%.4f",lstPosPnl.get(i).MarketMid) + "," + lstPosPnl.get(i).Ccy );
+            chData.add( String.format("%.5f", mPnl) + "," + String.format("%.4f",lstPosPnl.get(i).BookMid) + "," + String.format("%.5f", mPnlUsd) + "," + String.format("%.4f",lstPosPnl.get(i).MarketMid)
+                    + "," + lstPosPnl.get(i).Ccy + "," + lstPosPnl.get(i).Starred);
 
             listDataChild.put(listDataHeader.get(i), chData);
         }

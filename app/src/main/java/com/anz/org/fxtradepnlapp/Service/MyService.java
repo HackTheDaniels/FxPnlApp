@@ -62,7 +62,7 @@ public class MyService extends Service {
 
 			String sCurrentLine;
 			List<String> rawData=new ArrayList<String>();
-			InputStream is = this.getResources().openRawResource(R.raw.testdata);
+			InputStream is = this.getResources().openRawResource(R.raw.hackathon_data_for_pitch);
 			br = new BufferedReader(new InputStreamReader(is));
 			if (is != null) {
 				while ((sCurrentLine = br.readLine()) != null) {

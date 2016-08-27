@@ -24,7 +24,7 @@ public class RepeatingThread implements Runnable {
     private final Handler handler=new Handler();
     private int count=0;
     private Time lastProcessedTime=null;
-    private Time  currentTime=java.sql.Time.valueOf("00:00:00");
+    private Time  currentTime=java.sql.Time.valueOf("01:00:00");
     private MathProcessor proc;
     public RepeatingThread(MathProcessor processor)
     {
@@ -50,7 +50,7 @@ public class RepeatingThread implements Runnable {
         }
         lastProcessedTime=currentTime;
         currentTime=new Time(currentTime.getTime()+3000);
-        handler.postDelayed(this,30000);
+        handler.postDelayed(this,3000);
     }
 
     private void serviceHandler()
@@ -116,6 +116,7 @@ public class RepeatingThread implements Runnable {
         List<String> rawData=BufferedData.GetData();
         for (String row:rawData)
         {
+            cnt++;
             String[] line=row.split(",");
             if(line.length != 6)
             {
@@ -123,40 +124,46 @@ public class RepeatingThread implements Runnable {
                 return;
             }
 
-            String strTime=line[1].substring(0,8);
-            Time  mktTime= java.sql.Time.valueOf(strTime);
-            if(currentTime.equals(mktTime) ||(currentTime.after(mktTime) && (lastProcessedTime == null || lastProcessedTime.before(mktTime))))
-            {
+            try {
+                String strTime=line[1].substring(0,8);
+                Time  mktTime= java.sql.Time.valueOf(strTime);
+                if(currentTime.equals(mktTime) ||(currentTime.after(mktTime) && (lastProcessedTime == null || lastProcessedTime.before(mktTime))))
+                {
 
-                if(line[0].equalsIgnoreCase("deal")) {
-                    isDealRecord = true;
-                    Deal d =new Deal();
-                    d.DealCcy=line[2].substring(0,3);
-                    d.BaseCcy=line[2].substring(3);
-                    d.Quantity=Integer.valueOf(line[3].toString());
-                    d.Price=Double.valueOf(line[4].toString());
-                    d.Buy = line[5].toString().equalsIgnoreCase("B") ?true:false;
-                    d.Date = Calendar.getInstance().getTime();
-                    proc.DealEvent(d);
-                }
-                else {
-                    isQuoteRecord = true;
-                    Quote q=new Quote();
-                    q.QuoteCcy=line[2].substring(0,3);
-                    q.BaseCcy=line[2].substring(3);
-                    q.MarketType=line[3].toString();
-                    q.BidPrice=Double.valueOf(line[4].toString());
-                    q.AskPrice=Double.valueOf(line[5].toString());
-                    q.QuoteDate = Calendar.getInstance().getTime();
-                    q.MidPrice = Calculator.CalculateMid(q.BidPrice,q.AskPrice);
-                    if(q.MarketType.equalsIgnoreCase("AGG")) {
-                        proc.QuoteEvent(q);
+                    if(line[0].equalsIgnoreCase("deal")) {
+                        isDealRecord = true;
+                        Deal d =new Deal();
+                        d.DealCcy=line[2].substring(0,3);
+                        d.BaseCcy=line[2].substring(3);
+                        d.Quantity=Integer.valueOf(line[3].toString());
+                        d.Price=Double.valueOf(line[4].toString());
+                        d.Buy = line[5].toString().equalsIgnoreCase("B") ?true:false;
+                        d.Date = Calendar.getInstance().getTime();
+                        proc.DealEvent(d);
+                        Log.i("ReapeatingThread", "Deal processed -" + cnt);
+                    }
+                    else {
+                        isQuoteRecord = true;
+                        Quote q=new Quote();
+                        q.QuoteCcy=line[2].substring(0,3);
+                        q.BaseCcy=line[2].substring(3);
+                        q.MarketType=line[3].toString();
+                        q.BidPrice=Double.valueOf(line[4].toString());
+                        q.AskPrice=Double.valueOf(line[5].toString());
+                        q.QuoteDate = Calendar.getInstance().getTime();
+                        q.MidPrice = Calculator.CalculateMid(q.BidPrice,q.AskPrice);
+                        if(q.MarketType.equalsIgnoreCase("AGG")) {
+                            proc.QuoteEvent(q);
+                            Log.i("ReapeatingThread", "Quote processed -" + cnt);
+                        }
                     }
                 }
-                cnt++;
             }
-
-
+            catch(Exception ex)
+            {                Log.e("ReapeatingThread", "Exception at -" + cnt);
+                ex.printStackTrace();
+                continue;
+            }
         }
         if(isDealRecord) {
             refreshDealUI();

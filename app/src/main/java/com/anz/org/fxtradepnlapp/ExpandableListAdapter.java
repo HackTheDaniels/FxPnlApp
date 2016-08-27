@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 /**
@@ -94,6 +95,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView txtCurrentCCy = (TextView) convertView
                 .findViewById(R.id.currCCy);
         txtCurrentCCy.setText(childContents[4]);
+
+        CheckBox starCheckBox = (CheckBox)convertView
+                .findViewById(R.id.starCheck);
+        if(childContents[5].equalsIgnoreCase("true"))
+            starCheckBox.setChecked(true);
+        else
+            starCheckBox.setChecked(false);
         return convertView;
     }
 

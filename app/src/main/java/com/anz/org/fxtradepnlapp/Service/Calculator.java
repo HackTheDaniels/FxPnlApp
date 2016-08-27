@@ -108,7 +108,7 @@ public class Calculator
             double sellPart = 0;
             if (avgBuyPrice > 0)
                 buyPart = (marketMid - avgBuyPrice);
-            if (sellPart > 0)
+            if (avgSellPrice > 0)
                 sellPart = (avgSellPrice - marketMid);
             pnl = (Math.abs(posUsd) * (buyPart + sellPart)) / 1000;// divide by 1000 as it is to be reported in thousands
         }

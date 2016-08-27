@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.anz.org.fxtradepnlapp.Common.Deal;
 import com.anz.org.fxtradepnlapp.Common.PosPnl;
+import com.anz.org.fxtradepnlapp.Common.PosPnlHistory;
 import com.anz.org.fxtradepnlapp.Common.Quote;
 import com.anz.org.fxtradepnlapp.Common.Constants;
 
@@ -177,6 +178,18 @@ public class AppDataSource
         }
     }
 
+    public void MarkStarred(String ccy, boolean checked)
+    {
+        Log.d(Constants.APPNAME, "MarkStarred: " + ccy + checked);
+        List<PosPnl> p = GetPosPnl("'"+ccy+"'");
+        if(p.size() > 0) {
+            ContentValues values = new ContentValues();
+            //values.put(PosPnLTable.Age, pp.Age);// not working
+            values.put(PosPnLTable.Starred, checked);
+            db.update(PosPnLTable.TableName, values, PosPnLTable.Id + " = ?", new String[]{String.valueOf(p.get(0).Id)});
+        }
+    }
+
     public void AddHistoryPosPnl(PosPnl pp)
     {
         try {
@@ -216,6 +229,7 @@ public class AppDataSource
             if (whereClause != null) {
                 query = query + " WHERE " + PosPnLTable.Ccy + " IN (" + whereClause + ")";
             }
+            query = query + " ORDER BY " + PosPnLTable.Starred + " DESC";
 
             Cursor cur = db.rawQuery(query, null);
             if (cur != null && cur.moveToFirst()) {
@@ -234,6 +248,38 @@ public class AppDataSource
             Log.e(Constants.APPNAME, "GetPosPnl: " + ex.getMessage());
         }
         return pnls;
+    }
+
+    public List<PosPnlHistory> GetPosPnlHistory(String whereClause)
+    {
+        List<PosPnlHistory> pnlsHistory = new ArrayList<PosPnlHistory>();
+        try {
+            Log.i(Constants.APPNAME, "GetPosPnlHistory: whereClause: " + whereClause);
+            String query = "SELECT " +
+                    PosPnlHistoryTable.Pnl+ ", " +
+                    PosPnlHistoryTable.Timestamp +
+                    " FROM " + PosPnlHistoryTable.TableName;
+            if (whereClause != null) {
+                query = query + " WHERE " + PosPnlHistoryTable.Ccy + " IN (" + whereClause + ") ORDER BY Timestamp ";
+            }
+
+            Cursor cur = db.rawQuery(query, null);
+            if (cur != null && cur.moveToFirst()) {
+                do {
+                    PosPnlHistory tmp = ConstructPnlHistory(cur);
+                    if (tmp != null) {
+                        pnlsHistory.add(tmp);
+                    }
+                }
+                while (cur.moveToNext());
+            }
+            cur.close();
+        }
+        catch (Exception ex)
+        {
+            Log.e(Constants.APPNAME, "GetPosPnl: " + ex.getMessage());
+        }
+        return pnlsHistory;
     }
 
     public void AddQuote(Quote ccy)
@@ -332,6 +378,22 @@ public class AppDataSource
             Log.e(Constants.APPNAME, "ConstructPnl: " + ex.getMessage());
         }
         return pnl;
+    }
+
+    private PosPnlHistory ConstructPnlHistory(Cursor cur)
+    {
+        PosPnlHistory pnlHistory;
+        try{
+            pnlHistory = new PosPnlHistory();
+            pnlHistory.Pnl = cur.isNull(0) ? 0 : cur.getDouble(0);
+            pnlHistory.Timestamp = new Date(cur.getLong(1));
+        }
+        catch (Exception ex)
+        {
+            pnlHistory = null;
+            Log.e(Constants.APPNAME, "ConstructPnlHistory: " + ex.getMessage());
+        }
+        return pnlHistory;
     }
 
 

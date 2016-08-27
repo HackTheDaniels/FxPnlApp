@@ -99,13 +99,14 @@ public class MathProcessor
         else
         {
             deals.add(deal);
-            dataSource.AddDeal(deal);
         }
         for(int i = 0; i < deals.size(); i++)
         {
             CalculateWeightedPrice(deals.get(i));
             CalculatePnlOnDeal(deals.get(i));
         }
+        //Store the original deal
+        dataSource.AddDeal(deal);
     }
 
     private void CalculatePnlOnDeal(Deal deal)
@@ -280,7 +281,7 @@ public class MathProcessor
         Notification n  = new Notification.Builder(mainCtx)
                 .setContentTitle("Threshold reached")
                 .setContentText("Threshold reached for " + ccy)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.applogo)
                 .setAutoCancel(true).build();
 
         NotificationManager notificationManager =
